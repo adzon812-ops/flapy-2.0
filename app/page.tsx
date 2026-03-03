@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { MapPin, Maximize, BedDouble, Phone, Filter, Search, Home, Building2, Trees, Warehouse } from 'lucide-react'
+import { MapPin, Maximize, BedDouble, Phone, Filter, Search, Home, Building2, Trees, Warehouse, Users, Star } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -117,6 +117,13 @@ const OBJECTS = [
   }
 ]
 
+// Топ-риэлторы для промо-блока
+const TOP_AGENTS = [
+  { id: '1', name: 'Айжан К.', rating: 4.9, specialization: 'Квартиры в Есиле' },
+  { id: '2', name: 'Бауыржан Р.', rating: 4.8, specialization: 'Коммерция' },
+  { id: '3', name: 'Елена М.', rating: 5.0, specialization: 'Дома и коттеджи' },
+]
+
 const DISTRICTS = ['Все районы', 'Есиль', 'Алматинский', 'Сарыарка', 'Байконур', 'Нура']
 const TYPES = [
   { id: 'all', name: 'Все типы', icon: Home },
@@ -165,6 +172,47 @@ export default function HomePage() {
           </p>
         </div>
       </header>
+
+      {/* Быстрый доступ к риэлторам - ПРОМО-БЛОК */}
+      <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl p-6 text-white shadow-lg">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold mb-1">Хотите продать недвижимость?</h2>
+              <p className="text-green-100">Выберите проверенного риэлтора</p>
+            </div>
+            <Link
+              href="/agents"
+              className="flex items-center gap-2 bg-white text-green-600 px-6 py-3 rounded-xl font-medium hover:bg-green-50 transition-colors shadow-lg"
+            >
+              <Users className="w-5 h-5" />
+              Выбрать риэлтора
+            </Link>
+          </div>
+          
+          {/* Мини-карточки топ-риэлторов */}
+          <div className="flex gap-3 mt-4 overflow-x-auto pb-2 no-scrollbar">
+            {TOP_AGENTS.map((agent) => (
+              <Link
+                key={agent.id}
+                href={`/agents/${agent.id}`}
+                className="flex items-center gap-3 bg-white/20 backdrop-blur rounded-xl px-4 py-2 hover:bg-white/30 transition-colors whitespace-nowrap"
+              >
+                <div className="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center text-sm font-bold">
+                  {agent.name[0]}
+                </div>
+                <div>
+                  <p className="font-medium text-sm">{agent.name}</p>
+                  <div className="flex items-center gap-1 text-xs text-green-100">
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    <span>{agent.rating}</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Фильтры */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-16 z-40">
@@ -295,7 +343,7 @@ export default function HomePage() {
                   <span className="text-xs text-gray-400">{obj.views} просмотров</span>
                 </div>
 
-                {/* Риэлтор */}
+                {/* Риэлтор и действия - ИСПРАВЛЕННЫЙ БЛОК */}
                 <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-sm font-bold">
                     {obj.owner.name[0]}
@@ -309,13 +357,24 @@ export default function HomePage() {
                       <span className="text-xs text-gray-500 dark:text-gray-400">{obj.owner.rating}</span>
                     </div>
                   </div>
-                  <a
-                    href={`tel:${obj.owner.phone}`}
-                    onClick={(e) => e.stopPropagation()}
-                    className="p-2 bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
-                  >
-                    <Phone className="w-4 h-4" />
-                  </a>
+                  <div className="flex gap-2">
+                    <a
+                      href={`tel:${obj.owner.phone}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-2 bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
+                      title="Позвонить"
+                    >
+                      <Phone className="w-4 h-4" />
+                    </a>
+                    <Link
+                      href="/agents"
+                      onClick={(e) => e.stopPropagation()}
+                      className="px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      title="Другие риэлторы"
+                    >
+                      Ещё
+                    </Link>
+                  </div>
                 </div>
               </div>
             </Link>
