@@ -1,4 +1,3 @@
-// app/layout.tsx
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
@@ -22,7 +21,6 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <Providers>
           <Header />
-          {/* Основной контент с отступом для десктопного сайдбара */}
           <main className="lg:ml-64 min-h-screen bg-gray-50 dark:bg-gray-900">
             {children}
           </main>
