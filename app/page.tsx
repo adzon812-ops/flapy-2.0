@@ -160,21 +160,11 @@ export default function HomePage() {
   const formatPrice = (p: number) => p.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Шапка */}
-      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Объекты недвижимости
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400">
-            Найдите квартиру, дом или офис в Астане
-          </p>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-6">
+      {/* УБРАНА ШАПКА — она теперь в Header */}
+      
       {/* Быстрый доступ к риэлторам - ПРОМО-БЛОК */}
-      <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="max-w-7xl mx-auto px-4 pt-4">
         <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl p-6 text-white shadow-lg">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
@@ -215,7 +205,7 @@ export default function HomePage() {
       </div>
 
       {/* Фильтры */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-16 z-40">
+      <div className="bg-white dark:bg-gray-800 border-y border-gray-200 dark:border-gray-700 sticky top-14 lg:top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 py-4">
           {/* Поиск */}
           <div className="relative mb-4">
@@ -343,7 +333,7 @@ export default function HomePage() {
                   <span className="text-xs text-gray-400">{obj.views} просмотров</span>
                 </div>
 
-                {/* Риэлтор и действия - ИСПРАВЛЕННЫЙ БЛОК */}
+                {/* Риэлтор и действия */}
                 <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-sm font-bold">
                     {obj.owner.name[0]}
