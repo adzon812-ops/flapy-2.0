@@ -3,6 +3,7 @@ import type { Config } from 'tailwindcss'
 const config: Config = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   darkMode: 'class',
   theme: {
@@ -20,7 +21,10 @@ const config: Config = {
           800: '#166534',
           900: '#14532d',
         }
-      }
+      },
+      screens: {
+        'lg': '1024px',
+      },
     },
   },
   plugins: [],
