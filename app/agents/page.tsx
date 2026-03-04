@@ -1,276 +1,270 @@
 'use client'
 
 import { useState } from 'react'
-import { Star, Phone, Mail, MapPin, CheckCircle, Filter, Search, SortAsc } from 'lucide-react'
-import Link from 'next/link'
 import Image from 'next/image'
+import { Star, MapPin, Phone, MessageCircle, TrendingUp, Award, Search, Filter } from 'lucide-react'
+import { Header } from '@/components/Header'
+import { BottomNav } from '@/components/BottomNav'
+import { Sidebar } from '@/components/Sidebar'
 
-// Риэлторы с рейтингами
 const AGENTS = [
   {
     id: '1',
-    name: 'Айжан Куанышева',
-    photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200',
-    rating: 4.9,
-    reviews: 47,
+    name: 'Айжан К.',
+    agency: 'Элит Недвижимость',
+    rating: 4.8,
+    reviews: 24,
     deals: 156,
-    experience: '8 лет',
-    specialization: 'Квартиры в Есиле',
+    experience: '5 лет',
+    district: 'Есиль',
     phone: '+7 (701) 234-56-78',
-    email: 'aizhan@flapy.kz',
-    verified: true,
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80',
+    specialization: ['Квартиры', 'Новостройки'],
     top: true,
-    description: 'Специалист по элитной недвижимости. Помогу продать вашу квартиру за 14 дней.',
-    stats: { sold: 156, buyers: 89, avgTime: '21 день' }
+    tags: ['Топ-риелтор', 'Ипотека']
   },
   {
     id: '2',
-    name: 'Бауыржан Рахимов',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
-    rating: 4.8,
-    reviews: 38,
-    deals: 98,
-    experience: '6 лет',
-    specialization: 'Коммерческая недвижимость',
+    name: 'Бауыржан Р.',
+    agency: 'Астана Риелт',
+    rating: 4.9,
+    reviews: 31,
+    deals: 203,
+    experience: '7 лет',
+    district: 'Алматинский',
     phone: '+7 (707) 345-67-89',
-    email: 'baur@flapy.kz',
-    verified: true,
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
+    specialization: ['Офисы', 'Коммерция'],
     top: true,
-    description: 'Эксперт по офисам и торговым помещениям. Юридическое сопровождение сделок.',
-    stats: { sold: 98, buyers: 45, avgTime: '35 дней' }
+    tags: ['Топ-риелтор', 'Коммерция']
   },
   {
     id: '3',
-    name: 'Елена Морозова',
-    photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200',
+    name: 'Елена М.',
+    agency: 'Частный риелтор',
     rating: 5.0,
-    reviews: 24,
-    deals: 67,
-    experience: '4 года',
-    specialization: 'Дома и коттеджи',
+    reviews: 18,
+    deals: 89,
+    experience: '3 года',
+    district: 'Сарыарка',
     phone: '+7 (701) 456-78-90',
-    email: 'elena@flapy.kz',
-    verified: true,
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80',
+    specialization: ['Дома', 'Коттеджи'],
     top: false,
-    description: 'Помогу найти дом вашей мечты или выгодно продать участок.',
-    stats: { sold: 67, buyers: 34, avgTime: '45 дней' }
+    tags: ['VIP-объекты']
   },
   {
     id: '4',
-    name: 'Дамир Сулейменов',
-    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200',
+    name: 'Дамир С.',
+    agency: 'ProEstate',
     rating: 4.7,
-    reviews: 31,
-    deals: 82,
-    experience: '5 лет',
-    specialization: 'Новостройки',
+    reviews: 42,
+    deals: 178,
+    experience: '6 лет',
+    district: 'Есиль',
     phone: '+7 (707) 567-89-01',
-    email: 'damir@flapy.kz',
-    verified: true,
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80',
+    specialization: ['Студии', 'Инвестиции'],
     top: false,
-    description: 'Специалист по новостройкам Астаны. Знаю все застройщики лично.',
-    stats: { sold: 82, buyers: 56, avgTime: '18 дней' }
+    tags: ['Инвестор']
   },
   {
     id: '5',
-    name: 'Серик Байтасов',
-    photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200',
-    rating: 4.6,
-    reviews: 52,
-    deals: 134,
-    experience: '10 лет',
-    specialization: 'Вся недвижимость',
-    phone: '+7 (701) 678-90-12',
-    email: 'serik@flapy.kz',
-    verified: true,
-    top: false,
-    description: 'Работаю по всей Астане. Большая база покупателей.',
-    stats: { sold: 134, buyers: 78, avgTime: '28 дней' }
-  },
-  {
-    id: '6',
-    name: 'Гульнар Искакова',
-    photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
+    name: 'Гульнар К.',
+    agency: 'Уютный дом',
     rating: 4.8,
-    reviews: 29,
-    deals: 71,
-    experience: '7 лет',
-    specialization: 'Земельные участки',
+    reviews: 27,
+    deals: 134,
+    experience: '4 года',
+    district: 'Нура',
     phone: '+7 (707) 789-01-23',
-    email: 'gulnar@flapy.kz',
-    verified: true,
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80',
+    specialization: ['Участки', 'ИЖС'],
     top: false,
-    description: 'Эксперт по земельным вопросам. Помогу с оформлением документов.',
-    stats: { sold: 71, buyers: 23, avgTime: '60 дней' }
-  }
+    tags: ['Земля']
+  },
 ]
 
-export default function AgentsPage() {
-  const [sortBy, setSortBy] = useState<'rating' | 'deals' | 'experience'>('rating')
-  const [filterVerified, setFilterVerified] = useState(false)
-  const [search, setSearch] = useState('')
+const DISTRICTS = ['Все районы', 'Есиль', 'Алматинский', 'Сарыарка', 'Байконур', 'Нура']
+const SPECIALIZATIONS = ['Все', 'Квартиры', 'Дома', 'Офисы', 'Коммерция', 'Участки']
 
-  let filtered = AGENTS.filter(a => {
-    const matchSearch = !search || a.name.toLowerCase().includes(search.toLowerCase()) || a.specialization.toLowerCase().includes(search.toLowerCase())
-    const matchVerified = !filterVerified || a.verified
-    return matchSearch && matchVerified
+export default function AgentsPage() {
+  const [search, setSearch] = useState('')
+  const [district, setDistrict] = useState('Все районы')
+  const [spec, setSpec] = useState('Все')
+  const [showFilters, setShowFilters] = useState(false)
+
+  const filtered = AGENTS.filter(agent => {
+    const matchSearch = !search || agent.name.toLowerCase().includes(search.toLowerCase()) || agent.agency.toLowerCase().includes(search.toLowerCase())
+    const matchDistrict = district === 'Все районы' || agent.district === district
+    const matchSpec = spec === 'Все' || agent.specialization.includes(spec)
+    return matchSearch && matchDistrict && matchSpec
   })
 
-  filtered.sort((a, b) => {
-    if (sortBy === 'rating') return b.rating - a.rating
-    if (sortBy === 'deals') return b.deals - a.deals
-    return parseInt(b.experience) - parseInt(a.experience)
+  // Сортируем: топ-риелторы первые, потом по рейтингу
+  const sorted = [...filtered].sort((a, b) => {
+    if (a.top !== b.top) return b.top ? 1 : -1
+    return b.rating - a.rating
   })
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Шапка */}
-      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Выберите риэлтора
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400">
-            Продайте недвижимость через проверенного специалиста
-          </p>
-        </div>
-      </header>
-
-      {/* Фильтры */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Поиск по имени или специализации..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white"
-              />
+      <Header search={search} setSearch={setSearch} />
+      <Sidebar />
+      
+      <main className="lg:ml-64 pt-[105px] pb-20 lg:pb-6">
+        <div className="max-w-5xl mx-auto px-4 py-6">
+          {/* Заголовок */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div>
+              <h1 className="text-2xl font-bold dark:text-white">Риелторы Астаны</h1>
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Выберите проверенного специалиста</p>
             </div>
-            
-            <div className="flex gap-2">
-              <select 
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white"
-              >
-                <option value="rating">По рейтингу</option>
-                <option value="deals">По сделкам</option>
-                <option value="experience">По опыту</option>
-              </select>
-              
-              <button 
-                onClick={() => setFilterVerified(!filterVerified)}
-                className={`px-4 py-2.5 rounded-xl border transition-colors flex items-center gap-2 ${
-                  filterVerified 
-                    ? 'bg-green-50 border-green-200 text-green-700 dark:bg-green-900/30 dark:border-green-700 dark:text-green-400' 
-                    : 'border-gray-200 dark:border-gray-600 dark:text-white'
-                }`}
-              >
-                <CheckCircle className="w-4 h-4" />
-                <span className="hidden sm:inline">Проверенные</span>
-              </button>
-            </div>
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors dark:text-white w-fit"
+            >
+              <Filter className="w-4 h-4" />
+              Фильтры
+            </button>
           </div>
-        </div>
-      </div>
 
-      {/* Список риэлторов */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filtered.map((agent) => (
-            <div key={agent.id} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow">
-              <div className="flex gap-4">
-                {/* Фото */}
-                <div className="relative">
-                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gray-200">
-                    <Image
-                      src={agent.photo}
-                      alt={agent.name}
-                      width={80}
-                      height={80}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  {agent.top && (
-                    <span className="absolute -top-2 -right-2 px-2 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full">
-                      TOP
-                    </span>
-                  )}
-                </div>
+          {/* Фильтры */}
+          {showFilters && (
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 mb-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex flex-wrap gap-3">
+                <select
+                  value={district}
+                  onChange={(e) => setDistrict(e.target.value)}
+                  className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white text-sm"
+                >
+                  {DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+                </select>
+                <select
+                  value={spec}
+                  onChange={(e) => setSpec(e.target.value)}
+                  className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white text-sm"
+                >
+                  {SPECIALIZATIONS.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
+            </div>
+          )}
 
-                {/* Инфо */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-bold text-lg text-gray-900 dark:text-white">{agent.name}</h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{agent.specialization}</p>
+          {/* Список риелторов */}
+          <div className="space-y-4">
+            {sorted.map((agent) => (
+              <div key={agent.id} className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-shadow">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  {/* Аватар */}
+                  <div className="relative flex-shrink-0">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-gray-200">
+                      <Image
+                        src={agent.avatar}
+                        alt={agent.name}
+                        width={96}
+                        height={96}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    {agent.verified && (
-                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                    {agent.top && (
+                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
+                        <Award className="w-5 h-5 text-white" />
+                      </div>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-4 mt-2">
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                      <span className="font-bold text-gray-900 dark:text-white">{agent.rating}</span>
-                      <span className="text-sm text-gray-500">({agent.reviews} отзывов)</span>
+                  {/* Инфо */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+                      <div>
+                        <h3 className="text-lg font-bold dark:text-white flex items-center gap-2">
+                          {agent.name}
+                          {agent.top && (
+                            <span className="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 text-xs rounded-full font-medium">
+                              ТОП
+                            </span>
+                          )}
+                        </h3>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm">{agent.agency}</p>
+                      </div>
+                      <div className="flex items-center gap-1 px-3 py-1 bg-green-50 dark:bg-green-900/30 rounded-lg">
+                        <Star className="w-4 h-4 text-green-600 fill-current" />
+                        <span className="font-bold text-green-600 dark:text-green-400">{agent.rating}</span>
+                        <span className="text-gray-400 text-sm">({agent.reviews})</span>
+                      </div>
                     </div>
-                    <span className="text-gray-300">|</span>
-                    <span className="text-sm text-gray-600 dark:text-gray-300">{agent.experience} опыта</span>
+
+                    {/* Теги */}
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {agent.tags.map(tag => (
+                        <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                      <span className="px-2 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs rounded-full flex items-center gap-1">
+                        <MapPin className="w-3 h-3" />
+                        {agent.district}
+                      </span>
+                    </div>
+
+                    {/* Статистика */}
+                    <div className="grid grid-cols-3 gap-4 mb-4 py-3 border-y border-gray-100 dark:border-gray-700">
+                      <div>
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">{agent.deals}</div>
+                        <div className="text-xs text-gray-500">Сделок</div>
+                      </div>
+                      <div>
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">{agent.experience}</div>
+                        <div className="text-xs text-gray-500">Опыт</div>
+                      </div>
+                      <div>
+                        <div className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-1">
+                          <TrendingUp className="w-4 h-4 text-green-500" />
+                          {Math.round(agent.deals / parseInt(agent.experience))}
+                        </div>
+                        <div className="text-xs text-gray-500">В год</div>
+                      </div>
+                    </div>
+
+                    {/* Специализация */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {agent.specialization.map(s => (
+                        <span key={s} className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                          • {s}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Кнопки */}
+                    <div className="flex gap-3">
+                      <a
+                        href={`tel:${agent.phone}`}
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-green-500/30"
+                      >
+                        <Phone className="w-4 h-4" />
+                        Позвонить
+                      </a>
+                      <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white px-6 py-2.5 rounded-xl font-medium transition-colors">
+                        <MessageCircle className="w-4 h-4" />
+                        Написать
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              {/* Статистика */}
-              <div className="grid grid-cols-3 gap-4 mt-4 py-4 border-y border-gray-100 dark:border-gray-700">
-                <div className="text-center">
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">{agent.stats.sold}</p>
-                  <p className="text-xs text-gray-500">Продано</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">{agent.stats.buyers}</p>
-                  <p className="text-xs text-gray-500">Покупателей</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">{agent.stats.avgTime}</p>
-                  <p className="text-xs text-gray-500">Средний срок</p>
-                </div>
-              </div>
-
-              {/* Описание */}
-              <p className="mt-4 text-gray-600 dark:text-gray-300 text-sm">{agent.description}</p>
-
-              {/* Кнопки */}
-              <div className="flex gap-3 mt-4">
-                <a 
-                  href={`tel:${agent.phone}`}
-                  className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-medium transition-colors"
-                >
-                  <Phone className="w-4 h-4" />
-                  Позвонить
-                </a>
-                <Link 
-                  href={`/agents/${agent.id}/request`}
-                  className="flex-1 flex items-center justify-center gap-2 border border-green-500 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 py-3 rounded-xl font-medium transition-colors"
-                >
-                  Предложить объект
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {filtered.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-gray-500 dark:text-gray-400">Риэлторы не найдены</p>
+            ))}
           </div>
-        )}
+
+          {sorted.length === 0 && (
+            <div className="text-center py-20">
+              <p className="text-gray-500 dark:text-gray-400">Риелторы не найдены</p>
+            </div>
+          )}
+        </div>
       </main>
+
+      <BottomNav />
     </div>
   )
 }
