@@ -122,14 +122,14 @@ export default function HomePage() {
             <select
               value={district}
               onChange={(e) => setDistrict(e.target.value)}
-              className="px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-green-500 outline-none"
+              className="px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white outline-none focus:ring-2 focus:ring-green-500"
             >
               {DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
             </select>
             <select
               value={type}
               onChange={(e) => setType(e.target.value)}
-              className="px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-green-500 outline-none"
+              className="px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white outline-none focus:ring-2 focus:ring-green-500"
             >
               {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
             </select>
@@ -140,20 +140,20 @@ export default function HomePage() {
       {/* Контент */}
       <main className="max-w-7xl mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl sm:text-2xl font-bold dark:text-white">Объекты недвижимости</h1>
+          <h1 className="text-xl font-bold dark:text-white">Объекты недвижимости</h1>
           <span className="text-sm text-gray-500 dark:text-gray-400">Найдено: {filtered.length}</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filtered.map((obj) => (
             <Link href={`/object/${obj.id}`} key={obj.id}>
-              <article className="card group h-full flex flex-col">
-                <div className="relative aspect-[4/3] overflow-hidden">
+              <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow h-full flex flex-col">
+                <div className="relative aspect-[4/3]">
                   <Image
                     src={obj.image}
                     alt={obj.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-cover"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   />
                   <div className="absolute top-3 left-3">
@@ -169,24 +169,24 @@ export default function HomePage() {
                 </div>
 
                 <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2 mb-2 flex-1">
+                  <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2 mb-2 text-sm">
                     {obj.title}
                   </h3>
                   
-                  <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-sm mb-3">
-                    <MapPin className="w-4 h-4 flex-shrink-0" />
+                  <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-xs mb-2">
+                    <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
                     <span className="truncate">{obj.district}, {obj.address}</span>
                   </div>
 
-                  <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300 mb-3">
+                  <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-300 mb-3">
                     <span className="flex items-center gap-1">
-                      <Maximize className="w-4 h-4" />
+                      <Maximize className="w-3.5 h-3.5" />
                       {obj.area} м²
                     </span>
                     <span>{obj.floor}</span>
                   </div>
 
-                  <div className="pt-3 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                  <div className="mt-auto pt-3 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
                     <span className="text-lg font-bold text-green-600 dark:text-green-400">
                       {formatPrice(obj.price)} ₸
                     </span>
@@ -195,18 +195,18 @@ export default function HomePage() {
                         e.preventDefault()
                         window.location.href = `tel:+77012345678`
                       }}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg text-sm font-medium hover:bg-green-100 transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg text-xs font-medium"
                     >
-                      <Phone className="w-4 h-4" />
+                      <Phone className="w-3.5 h-3.5" />
                       <span className="hidden sm:inline">Звонок</span>
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-xs font-bold">
+                  <div className="flex items-center gap-2 mt-3">
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-xs font-bold">
                       {obj.owner.name[0]}
                     </div>
-                    <span className="text-sm text-gray-600 dark:text-gray-300 truncate">{obj.owner.name}</span>
+                    <span className="text-xs text-gray-600 dark:text-gray-300 truncate">{obj.owner.name}</span>
                     <span className="text-xs text-yellow-500 ml-auto">★ {obj.owner.rating}</span>
                   </div>
                 </div>
