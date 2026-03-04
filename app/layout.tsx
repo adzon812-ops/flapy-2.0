@@ -1,14 +1,22 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { Providers } from './providers'
-import { Header } from '@/components/Header'
 
-const inter = Inter({ subsets: ['latin', 'cyrillic'] })
+const inter = Inter({ 
+  subsets: ['latin', 'cyrillic'],
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: 'Flapy - Платформа для риэлторов Астаны',
-  description: 'Закрытая профессиональная площадка для риэлторов и агентств недвижимости',
+  title: 'Flapy — Недвижимость Астаны',
+  description: 'Профессиональная платформа для риэлторов и обмена недвижимостью',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: '#0F1419',
 }
 
 export default function RootLayout({
@@ -17,14 +25,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ru" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
-        <Providers>
-          <Header />
-          <main className="lg:ml-64 min-h-screen bg-gray-50 dark:bg-gray-900">
-            {children}
-          </main>
-        </Providers>
+    <html lang="ru" className="dark">
+      <body className={inter.className}>
+        {children}
       </body>
     </html>
   )
