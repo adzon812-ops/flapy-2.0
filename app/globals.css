@@ -8,32 +8,48 @@
   }
   
   body {
-    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200;
+    @apply bg-[#0F1419] text-gray-50 antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
 @layer components {
+  /* Главная кнопка — зелёная */
   .btn-primary {
-    @apply bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-xl
-    transition-all duration-200 active:scale-95 shadow-lg shadow-green-500/30;
+    @apply bg-green-500 hover:bg-green-400 text-white font-semibold py-3 px-6 
+           rounded-2xl transition-all duration-200 active:scale-95 
+           shadow-lg shadow-green-500/25;
   }
   
+  /* Вторичная кнопка — тёмная с обводкой */
   .btn-secondary {
-    @apply bg-white dark:bg-gray-800 text-gray-900 dark:text-white font-medium py-3 px-6
-    rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50
-    dark:hover:bg-gray-700 transition-all duration-200;
+    @apply bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-6 
+           rounded-2xl border border-gray-700 transition-all duration-200;
   }
   
-  .card {
-    @apply bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100
-    dark:border-gray-700 overflow-hidden transition-all duration-200 hover:shadow-md;
+  /* Карточка объекта */
+  .property-card {
+    @apply bg-gray-800/50 backdrop-blur-sm rounded-3xl overflow-hidden 
+           border border-gray-700/50 hover:border-gray-600 
+           transition-all duration-300 hover:shadow-2xl hover:shadow-green-500/10;
   }
   
+  /* Поле ввода */
   .input-field {
-    @apply w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600
-    bg-white dark:bg-gray-800 text-gray-900 dark:text-white
-    focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent
-    transition-all duration-200;
+    @apply w-full bg-gray-800/50 border border-gray-700 rounded-2xl 
+           px-4 py-3.5 text-white placeholder-gray-400
+           focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20
+           transition-all duration-200;
+  }
+  
+  /* Нижнее меню — активный пункт */
+  .nav-active {
+    @apply text-green-400;
+  }
+  
+  /* Нижнее меню — неактивный */
+  .nav-inactive {
+    @apply text-gray-400 hover:text-gray-300;
   }
 }
 
@@ -44,5 +60,10 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+  
+  /* Градиент для фона */
+  .bg-gradient-radial {
+    background: radial-gradient(ellipse at top, #1F2937 0%, #0F1419 50%);
   }
 }
